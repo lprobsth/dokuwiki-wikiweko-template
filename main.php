@@ -85,10 +85,15 @@ if (preg_match("/^".tpl_getConf("vector_discuss_ns")."?$|^".tpl_getConf("vector_
  */
 $loginname = "";
 if (!empty($conf["useacl"])){
-    if (isset($_SERVER["REMOTE_USER"]) && //no empty() but isset(): "0" may be a valid username...
-        $_SERVER["REMOTE_USER"] !== ""){
-        $loginname = $_SERVER["REMOTE_USER"]; //$INFO["client"] would not work here (-> e.g. if
-                                              //current IP differs from the one used to login)
+    if ($INFO["perm"]) {
+        $loginname = $INFO;
+        if (isset($_SERVER["REMOTE_USER"]) && //no empty() but isset(): "0" may be a valid username...
+            $_SERVER["REMOTE_USER"] !== ""){
+            $loginname = $_SERVER["REMOTE_USER"]; //$INFO["client"] would not work here (-> e.g. if
+                                                //current IP differs from the one used to login)
+        } else {
+            $loginname = "anon";
+        }
     }
 }
 
@@ -659,7 +664,7 @@ if (file_exists(DOKU_TPLINC."lang/".$conf["lang"]."/style.css")){
            ."  <div id=\"p-personal\">\n"
            ."    <ul>\n";
       //login?
-      if ($loginname === ""){
+      if ($loginname === "" || $loginname === "anon"){
           echo  "      <li id=\"pt-login\"><a href=\"".wl(cleanID(getId()), array("do" => "login"))."\" rel=\"nofollow\">".hsc($lang["btn_login"])."</a></li>\n"; //language comes from DokuWiki core
       }else{
           //username and userpage
