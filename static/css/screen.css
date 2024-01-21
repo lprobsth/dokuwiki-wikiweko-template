@@ -152,6 +152,7 @@ table {
   empty-cells: show;
   border-spacing: 0;
   border: 1px solid __border__;
+  table-layout: fixed;
 }
 caption {
   caption-side: top;
@@ -694,6 +695,9 @@ th[align="right"] {
 .dokuwiki table.inline tr:hover th,
 .dokuwiki table.inline th:hover {
   background-color: __background_alt__;
+}
+.dokuwiki div.table {
+  overflow-x: auto;
 }
 
 /* section edit buttons */
